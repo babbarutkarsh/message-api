@@ -1,0 +1,41 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with 'go test -c'
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below if you are using modules)
+# vendor/
+
+# Go generated files
+*.pb.go
+*.pb.gw.go
+*.swagger.json
+*.gen.go
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Compiled Object files, Static and Dynamic libs (remove the comment below if your project is using modules)
+#*.o
+#*.a
+#*.so
+
+# Ignore .DS_Store files on macOS
+.DS_Store
+
+# Ignore .env file containing sensitive information
+.env
+
+# Ignore binary files from Docker or other containers
+*.docker
