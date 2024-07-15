@@ -1,20 +1,79 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
+
+var DB *gorm.DB
+
+// Message represents the message structure in the database
+type Message struct {
+	ID             uint   `gorm:"primaryKey"`
+	AccountID      string `json:"account_id"`
+	MessageID      string `json:"message_id"`
+	SenderNumber   string `json:"sender_number"`
+	ReceiverNumber string `json:"receiver_number"`
+}
+
+// InitDatabase initializes the database connection
+func InitDatabase() error {
+	// Load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	// Retrieve environment variables
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	dbname := os.Getenv("DB_NAME")
+	password := os.Getenv("DB_PASSWORD")
+	sslmode := os.Getenv("DB_SSLMODE")
+
+	// Construct the DSN
+	dsn := "host=" + host + " port=" + port + " user=" + user +
+		" dbname=" + dbname + " password=" + password + " sslmode=" + sslmode
+
+	// Connect to the PostgreSQL database
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Failed to connect to the database: ", err)
+		return err
+	}
+
+	// Auto migrate the database schema
+	err = DB.AutoMigrate(&Message{})
+	if err != nil {
+		log.Fatal("Failed to migrate database schema: ", err)
+		return err
+	}
+
+	return nil
+}
 
 func main() {
 	r := gin.Default()
-	InitDatabase()
 
+	// Initialize the database connection
+	if err := InitDatabase(); err != nil {
+		log.Fatalf("Error initializing database: %v", err)
+	}
+
+	// API endpoints
 	r.POST("/create", createMessage)
 	r.GET("/get/messages/:account_id", getMessages)
 	r.GET("/search", searchMessages)
 
-	r.Run()
+	// Start the server
+	r.Run(":8080")
 }
 
 func createMessage(c *gin.Context) {
