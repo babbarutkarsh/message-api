@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -32,14 +33,19 @@ func InitDatabase() error {
 
 	// Retrieve environment variables
 	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
+	portStr := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	dbname := os.Getenv("DB_NAME")
 	password := os.Getenv("DB_PASSWORD")
 	sslmode := os.Getenv("DB_SSLMODE")
 
+	// Convert port to integer
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		log.Fatal("Failed to convert port to integer: ", err)
+	}
 	// Construct the DSN
-	dsn := "host=" + host + " port=" + port + " user=" + user +
+	dsn := "host=" + host + " port=" + strconv.Itoa(port) + " user=" + user +
 		" dbname=" + dbname + " password=" + password + " sslmode=" + sslmode
 
 	// Connect to the PostgreSQL database
