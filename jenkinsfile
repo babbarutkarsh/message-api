@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'your-docker-image'  // Replace with your Docker image name
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Build your Go application
+                    sh 'go build -o message_api'
+                    // Build Docker image
+                    sh 'docker build -t $DOCKER_IMAGE .'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run unit tests or any other testing commands
+                    sh 'go test ./...'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Push Docker image to a registry (if needed)
+                    sh 'docker push $DOCKER_IMAGE'
+
+                    // Deploy to Kubernetes
+                    // Assuming kubectl is configured and kubeconfig is available
+                    sh 'kubectl apply -f deployment.yaml -f service.yaml -f ingress.yaml -f network-policy.yaml'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI/CD pipeline completed successfully!'
+        }
+        failure {
+            echo 'CI/CD pipeline failed!'
+        }
+    }
+}

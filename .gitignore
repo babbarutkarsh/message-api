@@ -39,3 +39,11 @@
 
 # Ignore binary files from Docker or other containers
 *.docker
+
+# ignore the k8s folder 
+k8s/
+# ignore the terraform folder
+terraform-module/
+
+# ignore the kubeconfig file
+kubeconfig
