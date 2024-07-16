@@ -10,4 +10,3 @@ output "eks_cluster_security_group_ids" {
   value = module.eks.cluster_security_group_ids
 }
 
-# Add more outputs as needed
