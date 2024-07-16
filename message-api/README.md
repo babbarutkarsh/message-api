@@ -68,6 +68,10 @@ Ensure proper test coverage for your application. Run tests using:
 ```bash
 go test ./...
 ```
+### 7. The docker hub deployed images are
+
+The docker Image is babbarutkarsh/message-api-amd64:stable for AMD based systems
+The docker Image is babbarutkarsh/message-api:stable for ARM based systems
 
 ## Contributing
 
