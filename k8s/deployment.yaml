@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-api-deployment
+  labels:
+    app: message-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: message-api
+  template:
+    metadata:
+      labels:
+        app: message-api
+    spec:
+      containers:
+      - name: message-api
+        image: babbarutkarsh/message-api:stable
+        ports:
+        - containerPort: 8080
+        resources:
+         requests:
+           memory: "300Mi"
+           cpu: "250m"
+         limits:
+           memory: "400Mi"

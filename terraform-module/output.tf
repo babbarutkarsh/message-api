@@ -1,0 +1,13 @@
+output "eks_cluster_name" {
+  value = module.eks.cluster_id
+}
+
+output "eks_cluster_endpoint" {
+  value = module.eks.cluster_endpoint
+}
+
+output "eks_cluster_security_group_ids" {
+  value = module.eks.cluster_security_group_ids
+}
+
+# Add more outputs as needed
