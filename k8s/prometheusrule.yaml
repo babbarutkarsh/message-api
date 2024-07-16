@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: message-api-rules
+  labels:
+    app: message-api       # Label to match application
+spec:
+  groups:
+    - name: message-api-alerts
+      rules:
+        - alert: HighErrorRate
+          expr: sum(rate(http_request_errors_total{job="message-api"}[5m])) > 10
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High error rate on {{ $labels.instance }}"
+            description: "{{ $labels.instance }} has a high error rate ({{ $value }} errors / 5 minutes)."

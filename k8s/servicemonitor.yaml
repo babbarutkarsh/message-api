@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: message-api-monitor
+  labels:
+    app: message-api         # Label to match
+spec:
+  selector:
+    matchLabels:
+      app: message-api       # Label selector
+  endpoints:
+    - port: http             # Name of the port where metrics are exposed
+      interval: 30s          # Scrape interval for Prometheus

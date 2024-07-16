@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'your-docker-image'  // Replace with your Docker image name
+        DOCKER_IMAGE = 'babbarutkarsh/message-api-64:stable'
     }
 
     stages {

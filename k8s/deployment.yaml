@@ -9,6 +9,11 @@ spec:
   selector:
     matchLabels:
       app: message-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -16,12 +21,18 @@ spec:
     spec:
       containers:
       - name: message-api
-        image: babbarutkarsh/message-api:stable
+        image: babbarutkarsh/message-api-amd64:stable
         ports:
         - containerPort: 8080
         resources:
-         requests:
-           memory: "300Mi"
-           cpu: "250m"
-         limits:
-           memory: "400Mi"
+          requests:
+            memory: "300Mi"
+            cpu: "250m"
+          limits:
+            memory: "400Mi"
+            cpu: "500m"        
+      - name: vector-sidecar
+        image: timberio/vector:latest-alpine
+        ports: 
+        - containerPort: 8080
+        
