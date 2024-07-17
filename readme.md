@@ -20,7 +20,7 @@ This repository contains configurations and code for deploying and managing an A
 
 ### Repository Structure
 
-- **kubernetes/**: Contains Kubernetes YAML files for deployments, services, ingress, etc.
+- **k8s/**: Contains Kubernetes YAML files for deployments, services, ingress, etc.
 - **terraform/**: Includes Terraform modules for provisioning AWS resources such as EKS clusters.
 - **Jenkinsfile**: Defines the Jenkins pipeline for automated CI/CD processes.
 - **message-api/**: Source code for the Go-based message API.
@@ -29,14 +29,14 @@ This repository contains configurations and code for deploying and managing an A
 
 ### Overview
 
-The `kubernetes/` directory contains YAML files for deploying and managing Kubernetes resources such as deployments, services, ingress configurations, and more.
+The `k8s/` directory contains YAML files for deploying and managing Kubernetes resources such as deployments, services, ingress configurations, and more.
 
 ### Usage
 
 Apply Kubernetes resources using `kubectl`:
 
 ```bash
-kubectl apply -f kubernetes/
+kubectl apply -f k8s/
 ```
 
 ## Terraform Modules
@@ -97,7 +97,7 @@ go build
 ### Steps
 
 1. **Deploy Kubernetes Resources**:
-   Apply YAML files in `kubernetes/` directory to deploy API components.
+   Apply YAML files in `k8s/` directory to deploy API components.
 
 2. **Provision Infrastructure with Terraform**:
    Use Terraform in `terraform/` directory to create EKS cluster and required AWS resources.
