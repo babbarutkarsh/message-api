@@ -8,6 +8,4 @@ resource "aws_security_group" "kubernetes_control_plane" {
   name        = "kubernetes-control-plane-sg"
   description = "Security group for Kubernetes control plane"
   vpc_id      = aws_vpc.main.id
-
-  # Define ingress rules for Kubernetes control plane
 }
