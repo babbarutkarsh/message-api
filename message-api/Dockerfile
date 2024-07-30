@@ -1,5 +1,5 @@
-# Use the latest official base image of Go with Alpine Linux
-FROM golang:1.22-alpine
+# Stage 1: Build the Go app
+FROM golang:1.22-alpine AS builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -10,7 +10,7 @@ COPY go.mod go.sum ./
 # Update and install system packages
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache bash git openssh
+    apk add --no-cache git openssh
 
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
@@ -21,9 +21,14 @@ COPY . .
 # Build the Go app
 RUN go build -o /message_api
 
-# Remove unnecessary packages and clean up cache to reduce image size
-RUN apk del bash git openssh && \
-    rm -rf /var/cache/apk/*
+# Stage 2: Create a minimal image with only the built binary
+FROM alpine:latest
+
+# Install the necessary libraries for the Go binary to run
+RUN apk add --no-cache ca-certificates
+
+# Copy the binary from the builder stage
+COPY --from=builder /message_api /message_api
 
 # Use a non-root user for running the application
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
