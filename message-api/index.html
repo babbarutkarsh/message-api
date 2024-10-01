@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Message API UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    label, input {
+      display: block;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .response {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Simple Message API UI</h2>
+
+    <!-- POST form -->
+    <h3>Send a Message (POST)</h3>
+    <label for="sender">Sender Number:</label>
+    <input type="text" id="sender" placeholder="Enter sender number">
+
+    <label for="receiver">Receiver Number:</label>
+    <input type="text" id="receiver" placeholder="Enter receiver number">
+
+    <label for="message">Message Content:</label>
+    <input type="text" id="message" placeholder="Enter message content">
+
+    <button onclick="postMessage()">Send Message</button>
+
+    <!-- GET form -->
+    <h3>Get Messages by Account ID (GET)</h3>
+    <label for="accountID">Account ID:</label>
+    <input type="text" id="accountID" placeholder="Enter account ID">
+
+    <button onclick="getMessages()">Get Messages</button>
+
+    <!-- Response display -->
+    <div class="response">
+      <h4>Response:</h4>
+      <pre id="responseOutput"></pre>
+    </div>
+  </div>
+
+  <script>
+    // Function to make a POST request
+    async function postMessage() {
+      const sender = document.getElementById('sender').value;
+      const receiver = document.getElementById('receiver').value;
+      const message = document.getElementById('message').value;
+
+      const data = {
+        sender_number: sender,
+        receiver_number: receiver,
+        message_content: message
+      };
+
+      try {
+        const response = await fetch('http://localhost:8080/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        document.getElementById('responseOutput').textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        document.getElementById('responseOutput').textContent = 'Error: ' + error;
+      }
+    }
+
+    // Function to make a GET request
+    async function getMessages() {
+      const accountID = document.getElementById('accountID').value;
+      const url = `http://localhost:8080/messages/${accountID}`;
+
+      try {
+        const response = await fetch(url);
+        const result = await response.json();
+        document.getElementById('responseOutput').textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        document.getElementById('responseOutput').textContent = 'Error: ' + error;
+      }
+    }
+  </script>
+</body>
+</html>
