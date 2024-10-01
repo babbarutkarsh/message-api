@@ -110,15 +110,18 @@ func getMessages(c *gin.Context) {
 
 func searchMessages(c *gin.Context) {
 	var messages []Message
+	// Search by message_id
 	if messageID := c.Query("message_id"); messageID != "" {
-		DB.Where("message_id IN ?", messageID).Find(&messages)
+		DB.Where("message_id = ?", messageID).Find(&messages)
 	}
+	// Search by sender_number
 	if senderNumber := c.Query("sender_number"); senderNumber != "" {
-		DB.Where("sender_number IN ?", senderNumber).Find(&messages)
+		DB.Where("sender_number = ?", senderNumber).Find(&messages)
 	}
+	// Search by receiver_number
 	if receiverNumber := c.Query("receiver_number"); receiverNumber != "" {
-		DB.Where("receiver_number IN ?", receiverNumber).Find(&messages)
+		DB.Where("receiver_number = ?", receiverNumber).Find(&messages)
 	}
-
+	// Return the results
 	c.JSON(http.StatusOK, messages)
 }
