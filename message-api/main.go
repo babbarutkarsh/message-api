@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -25,12 +24,6 @@ type Message struct {
 
 // InitDatabase initializes the database connection
 func InitDatabase() error {
-	// Load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	// Retrieve environment variables
 	host := os.Getenv("DB_HOST")
 	portStr := os.Getenv("DB_PORT")
