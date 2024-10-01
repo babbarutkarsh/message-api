@@ -88,6 +88,22 @@ go build
 
 ## Usage
 
+## POST a message to the Database
+
+curl -X POST http://localhost:8080/create \
+-H "Content-Type: application/json" \
+-d '{
+  "account_id": "123",
+  "message_id": "abc123",
+  "sender_number": "+1234567890",
+  "receiver_number": "+9876543210"
+}'
+
+## GET a message from the Database
+
+curl -X GET http://localhost:8080/get/message/abc123
+
+
 ### Prerequisites
 
 - Kubernetes cluster configured and accessible.
