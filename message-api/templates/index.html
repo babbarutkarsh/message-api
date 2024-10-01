@@ -82,13 +82,17 @@
       };
 
       try {
-        const response = await fetch('http://localhost:8080/messages', {
+        const response = await fetch('http://localhost:8080/create', { // Updated endpoint
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
         });
+        // Check if the response status is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const result = await response.json();
         document.getElementById('responseOutput').textContent = JSON.stringify(result, null, 2);
       } catch (error) {
@@ -99,10 +103,13 @@
     // Function to make a GET request
     async function getMessages() {
       const accountID = document.getElementById('accountID').value;
-      const url = `http://localhost:8080/messages/${accountID}`;
+      const url = `http://localhost:8080/get/messages/${accountID}`; // Updated endpoint
 
       try {
         const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const result = await response.json();
         document.getElementById('responseOutput').textContent = JSON.stringify(result, null, 2);
       } catch (error) {

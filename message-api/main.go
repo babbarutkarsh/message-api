@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -24,6 +25,12 @@ type Message struct {
 
 // InitDatabase initializes the database connection
 func InitDatabase() error {
+
+	// get port from .env file
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	// Retrieve environment variables
 	host := os.Getenv("DB_HOST")
 	portStr := os.Getenv("DB_PORT")
@@ -66,7 +73,15 @@ func main() {
 		log.Fatalf("Error initializing database: %v", err)
 	}
 
+	r.LoadHTMLGlob("templates/*")
 	// API endpoints
+	r.GET("/", func(c *gin.Context) {
+		if _, err := os.Stat("templates/index.html"); os.IsNotExist(err) {
+			log.Fatal("Template not found")
+		}
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
+
 	r.POST("/create", createMessage)
 	r.GET("/get/messages/:account_id", getMessages)
 	r.GET("/search", searchMessages)
